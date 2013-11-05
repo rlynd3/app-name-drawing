@@ -1,16 +1,11 @@
-
-
-/*
-
-# NameSet
-# Name
-
- */
-
 /** @namespace */
 var rld = rld || {};
 
-rld.NameSet = function( id ) {
+/**
+ * [Drawing description]
+ * @param {[type]} id [description]
+ */
+rld.Drawing = function( id ) {
 
     // private properties
     var _self = this;
@@ -97,33 +92,4 @@ rld.NameSet = function( id ) {
         }
     }
 
-}
-
-
-rld.Person = function( first, last ) {
-
-    // private properties
-    var _self = this;
-    var _cantDrawList = [_self];
-
-    // public properties
-    this.first = first || 'joe';
-    this.last  = last  || 'schmo';
-
-    // public methods
-    
-    /**
-     * 
-     */
-    this.addCantDraw = function( /* ...person */ ) {
-        var i = arguments.length;
-        while( i-- ) {
-            if( arguments[ i ] instanceof rld.Person ) {
-                _cantDrawList.push( arguments[ i ] );
-            }
-        }
-    };
-
-    this.getCantDrawList = function(){ return _cantDrawList; };
-
-}
+};
