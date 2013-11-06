@@ -1,7 +1,76 @@
+<!DOCTYPE html>
 <html>
 <head>
-<script src="./lib/curl.js"></script
+	<!-- META -->
+	<title>Secret Santa!</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="description" content="" />
+	
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="css/kickstart.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />	
+	<style>#forkongithub a{box-sizing:content-box;-webkit-box-sizing:content-box;}#forkongithub a{background:#8C0E0E;color:#fff;text-decoration:none;font-family:arial, sans-serif;text-align:center;font-weight:bold;padding:5px 40px;font-size:1rem;line-height:2rem;position:relative;transition:0.5s;}#forkongithub a:hover{background:#3C8D0D;color:#fff;}#forkongithub a::before,#forkongithub a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}#forkongithub a::after{bottom:1px;top:auto;}@media screen and (min-width:600px){#forkongithub{position:absolute;display:block;top:0;right:0;width:200px;overflow:hidden;height:200px;}#forkongithub a{width:200px;position:absolute;top:60px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);box-shadow:4px 4px 12px rgba(0,0,0,0.6);}}</style>
+	
+	<!-- Javascript -->
+	<script src="./lib/curl.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script type="text/javascript" src="lib/kickstart.js"></script>
 </head>
 <body>
+<div class="grid">
+	<div id="home" class="col_12" style="margin-top:10%;">
+		<h1 class="center">
+		<p><i class="icon-star-empty icon-3x"></i></p>
+		Secret Santa</h1>
+		<h4 style="color:#999;margin-bottom:40px;" class="center">Name Drawing Application
+		<p><button class="large green">Get Started!</button></p></h4>
+	</div>
+	<fieldset id="create" class="col_12" style="margin-top:10%;">
+		<h1 class="center"><i class="icon-star-empty"></i> Secret Santa</h1>
+
+		<fieldset>
+			<legend>Why are you here?</legend>
+			<input id="drawing_id" type="text" placeholder="Drawing Name" />
+		</fieldset>
+
+		<fieldset>
+			<legend>Who's in this drawing?</legend>
+			<form class="vertical">
+			<div class="col_3 column">
+				<input id="drawing_id" type="text" placeholder="First" />
+				<input id="drawing_id" type="text" placeholder="Last" />
+				<button class="medium inset green"><i class="icon-plus"></i> Add</button>
+			</div>
+			</form>
+			<div class="col_5 column">
+			<form class="vertical">
+				<fieldset>
+					<legend>Ryan Schmo</legend>
+					<label for="select3">Who can't this person draw?</label>
+					<select id="select3" multiple="multiple" class="fancy">
+					<option value="1">Joe Schmo</option>
+					<option value="2">Lauren Schmo</option>
+					<option value="3">Tonya Schmo</option>
+					<option value="3">Matt Schmo</option>
+					</select>
+				</fieldset>
+			</form>
+			</div>
+		</fieldset>
+
+
+	</fieldset>
+	<fieldset id="results" class="col_12" style="margin-top:10%;">
+		<h1 class="center"><i class="icon-star-empty"></i> Secret Santa</h1>
+
+	</fieldset>
+</div>
+
+<span id="forkongithub"><a href="https://github.com/rlynd3/app-name-drawing">Fork me on GitHub</a></span>
+
+<!-- test -->
 <script src="./test/test.js"></script>
+
 </body>
+</html>
