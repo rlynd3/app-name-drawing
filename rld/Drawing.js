@@ -78,18 +78,21 @@ rld.Drawing = function( id ) {
     this.drawAllNames = function() {
 
         _self.resetDrawing();
-
+        var results = [];
         var i = _persons.length;
         var p;
         while( i-- ) {
             p = _self.drawName( _persons[i] );
+            results.push( { they: _persons[i], have: p } );
             console.log( _persons[i].first + ' has ' + p.first );
         }
 
         if( p === _persons[i+1] ) {
             // try again
-            _self.drawAllNames();
+            return _self.drawAllNames();
         }
+
+        return results;
     }
 
 };

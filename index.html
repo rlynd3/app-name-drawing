@@ -14,63 +14,100 @@
 	
 	<!-- Javascript -->
 	<script src="./lib/curl.js"></script>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script type="text/javascript" src="lib/kickstart.js"></script>
+	
 </head>
 <body>
-<div class="grid">
-	<div id="home" class="col_12" style="margin-top:10%;">
-		<h1 class="center">
-		<p><i class="icon-star-empty icon-3x"></i></p>
-		Secret Santa</h1>
-		<h4 style="color:#999;margin-bottom:40px;" class="center">Name Drawing Application
-		<p><button class="large green">Get Started!</button></p></h4>
+<div class="grid flex">
+
+	<!-- HOME VIEW -->
+	<div id="home" class="hide" style="margin-top:10%;">
+		<div class="col_12">
+			<h1 class="center">
+			<p><i class="icon-star-empty icon-3x"></i></p>
+			Secret Santa</h1>
+			<h4 style="color:#999;margin-bottom:40px;" class="center">Name Drawing Application
+			<p><button class="large green">Get Started!</button></p></h4>
+		</div>
 	</div>
-	<fieldset id="create" class="col_12" style="margin-top:10%;">
-		<h1 class="center"><i class="icon-star-empty"></i> Secret Santa</h1>
 
-		<fieldset>
-			<legend>Why are you here?</legend>
-			<input id="drawing_id" type="text" placeholder="Drawing Name" />
-		</fieldset>
 
-		<fieldset>
-			<legend>Who's in this drawing?</legend>
-			<form class="vertical">
-			<div class="col_3 column">
-				<input id="drawing_id" type="text" placeholder="First" />
-				<input id="drawing_id" type="text" placeholder="Last" />
-				<button class="medium inset green"><i class="icon-plus"></i> Add</button>
+	<!-- CREATE VIEW -->
+	<div id="create" class="hide" style="margin-top:10%;">
+		<fieldset class="col_12">
+			<h1 class="center"><i class="icon-star-empty"></i> Secret Santa</h1>
+
+			<fieldset id="drawing_options">
+				<legend>Why are you here?</legend>
+				<input id="drawing_id" type="text" placeholder="Drawing Name" />
+				<button id="btn_create_drawing" class="medium inset green"><i class="icon-plus"></i> Create Drawing</button>
+			</fieldset>
+
+			<fieldset id="person_options" class="hide">
+				<legend>Who's in this drawing?</legend>
+				<form class="horizontal">
+				<div class="col_12 column">
+					<input id="p_first" type="text" placeholder="First" />
+					<input id="p_last" type="text" placeholder="Last" />
+					<button id="btn_create_person" class="medium inset green"><i class="icon-plus"></i> Add</button>
+				</div>
+				</form>
+				<div class="col_4 column">
+				<form id="persons0" class="vertical">
+					<!-- dynamic -->
+				</form>
+				</div>
+				<div class="col_4 column">
+				<form id="persons1" class="vertical">
+					<!-- dynamic -->
+				</form>
+				</div>
+				<div class="col_4 column">
+				<form id="persons2" class="vertical">
+					<!-- dynamic -->
+				</form>
+				</div>
+			</fieldset>
+			<div class="col_12 center">
+				<button id="btn_draw" class="large red hide"><i class="icon-tags"></i> Draw Names</button>
 			</div>
-			</form>
-			<div class="col_5 column">
-			<form class="vertical">
-				<fieldset>
-					<legend>Ryan Schmo</legend>
-					<label for="select3">Who can't this person draw?</label>
-					<select id="select3" multiple="multiple" class="fancy">
-					<option value="1">Joe Schmo</option>
-					<option value="2">Lauren Schmo</option>
-					<option value="3">Tonya Schmo</option>
-					<option value="3">Matt Schmo</option>
-					</select>
-				</fieldset>
-			</form>
+		</fieldset>
+	</div>
+
+	<!-- RESULTS VIEW -->
+	<div id="results" class="hide" style="margin-top:10%;">
+	<fieldset class="col_12">
+		<h1 class="center"><i class="icon-star-empty"></i> Secret Santa</h1>
+		<fieldset class="col_12">
+			<legend>Drawing Results</legend>
+			<div>bla bla bla something about how to use the results</div>
+			<div id="results_list">
+				<!-- dynamic -->
 			</div>
 		</fieldset>
-
-
 	</fieldset>
-	<fieldset id="results" class="col_12" style="margin-top:10%;">
-		<h1 class="center"><i class="icon-star-empty"></i> Secret Santa</h1>
+	</div>
 
-	</fieldset>
 </div>
 
 <span id="forkongithub"><a href="https://github.com/rlynd3/app-name-drawing">Fork me on GitHub</a></span>
 
-<!-- test -->
-<script src="./test/test.js"></script>
-
+<!-- bootstrap -->
+<script>
+	curl(
+		[
+			'js!https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js!order',
+			'js!lib/kickstart.js!order',
+			'js!rld/Person!order', 
+			'js!rld/Drawing!order',
+			'js!rld/UI.js!order'
+		], 
+		function(){
+			var ui = new rld.UI( window, document, $ );
+		},
+		function(err) {
+			throw err;
+		}
+	);
+</script>
 </body>
 </html>
