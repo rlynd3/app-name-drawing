@@ -237,7 +237,9 @@ rld.UI = function( window, document, $ ) {
 
                 var link = window.location + '#!/' + btoa( ( drawing.id || '' ) + ',' + they.first + ',' + they.last + ',' + have.first + ',' + have.last );
                 container.append( 
-                    $('<a href="' + link + '">').text( link )
+                    $('<a href="' + link + '">').text( link ).click(function(evt) {
+                        window.open( link );
+                    })
                 );
 
             };
