@@ -16,7 +16,7 @@ rld.Drawing = function( id ) {
     var _available = [];
 
     // public properties
-    this.id = id || 'unknown';
+    this.id = id || null;
 
     // public methods
     
@@ -41,6 +41,19 @@ rld.Drawing = function( id ) {
         _persons.push( p );
         _available.push( p );
         return p;
+    };    
+
+    this.getPersonByFullName = function( fullName ) {
+
+        var i = _persons.length;
+
+        while( i-- ) {
+            if( _persons[ i ].fullName === fullName ) {
+                return _persons[ i ];
+            }
+        }
+
+        return null;
     };
 
     this.drawName = function( person ) {
@@ -76,23 +89,29 @@ rld.Drawing = function( id ) {
     };
 
     this.drawAllNames = function() {
+        var itr = 10; // try 10 times (max) for a solution or give up...
+        return (function draw() {
+            _self.resetDrawing();
+            var results = [];
+            var i = _persons.length;
+            var p;
+            while( i-- ) {
+                p = _self.drawName( _persons[i] );
+                results.push( { they: _persons[i], have: p } );
+                // console.log( _persons[i].fullName + ' has ' + p.fullName );
+            }
 
-        _self.resetDrawing();
-        var results = [];
-        var i = _persons.length;
-        var p;
-        while( i-- ) {
-            p = _self.drawName( _persons[i] );
-            results.push( { they: _persons[i], have: p } );
-            console.log( _persons[i].first + ' has ' + p.first );
-        }
+            if( p === _persons[i+1] ) {
+                // try again
+                if( itr-- ) {
+                    return draw();
+                } else {
+                    return null;
+                }
+            }
 
-        if( p === _persons[i+1] ) {
-            // try again
-            return _self.drawAllNames();
-        }
-
-        return results;
+            return results;
+        })();
     }
 
 };

@@ -13,11 +13,14 @@ rld.UI = function( window, document, $ ) {
     var _self = this;
     var _currentState;
 
+    var drawing; // global drawing instance
+
     // States
     this.State = {
         Home:    new HomeState( 'home', _self ),
         Create:  new CreateState( 'create', _self ),
-        Results: new ResultsState( 'results', _self )
+        Results: new ResultsState( 'results', _self ),
+        Reveal:  new RevealState( 'reveal', _self )
     }
 
 
@@ -36,8 +39,21 @@ rld.UI = function( window, document, $ ) {
     // public methods
 
     // initial state
-    this.startState( this.State.Home );
+    var hash = window.location.hash.split('!/')[1];
+    if( hash ) {
+        this.startState( this.State.Reveal, hash );
+    } else {
+        this.startState( this.State.Home );
+    }
 
+
+    //--------------------
+    // UI States
+    //--------------------    
+
+    function error( msg ) {
+        $( '#error' ).text( msg ).show('100');
+    }
 
     //--------------------
     // UI States
@@ -82,7 +98,6 @@ rld.UI = function( window, document, $ ) {
         var $personOpt  = $( '#person_options' );
 
         // drawing app
-        var drawing = null;
         var persons = [];
 
         // buttons
@@ -92,10 +107,11 @@ rld.UI = function( window, document, $ ) {
             evt.preventDefault();
             drawing = new rld.Drawing( $('#drawing_id').val() );
             /*debug*/window.drawing = drawing;
+            $('#create h1:first').html('<i class="icon-star-empty"></i> ' + ( drawing.id || 'Secret Santa' ) );
             $drawingOpt.hide('100', function() {
                 $personOpt.show('100');
             });
-        });        
+        });
 
         $('#btn_create_person').click(function(evt){
             evt.preventDefault();
@@ -103,6 +119,20 @@ rld.UI = function( window, document, $ ) {
         });
 
         drawBtn.click(function(evt) {
+            // add can't select choices
+            var entry, choices, p;
+            for (var i = 0; i < persons.length; i++) {
+                entry = persons[ i ];
+                choices = entry.container.find("option:selected").map(function(){ return this.innerText }).get()
+                
+                for (var j = 0; j < choices.length; j++) {
+                    p = drawing.getPersonByFullName( choices[ j ] );
+                    if( p ) {
+                        entry.person.addCantDraw( p );
+                    }
+                }
+            }
+
             var results = drawing.drawAllNames();
             owner.startState( owner.State.Results, results );
         });
@@ -122,7 +152,7 @@ rld.UI = function( window, document, $ ) {
             set.attr('id', id);
 
             set.append(
-                $('<legend>').text(p.first + ' ' + p.last)
+                $('<legend>').text( p.fullName )
             );
 
             set.append(
@@ -133,9 +163,9 @@ rld.UI = function( window, document, $ ) {
             var name = '';
 
             for (var i = 0; i < persons.length; i++) {
-                name = persons[i].person.first + ' ' + persons[i].person.last;
+                name = persons[i].person.fullName;
                 select.append(
-                    $('<option value="' + i + 1 + '">' + name + '</option>')
+                    $('<option value="' + i + '">' + name + '</option>')
                 );
             }
 
@@ -147,7 +177,7 @@ rld.UI = function( window, document, $ ) {
 
             $( '#persons' + ((persons.length-1) % 3) ).append( set );
 
-            drawBtn.show('100');
+            if( persons.length > 2 ) drawBtn.show('100');
         }
 
         function _updatePersons( newPeep ) {
@@ -156,7 +186,7 @@ rld.UI = function( window, document, $ ) {
             for (var i = 0; i < persons.length; i++) {
                 select = persons[i].container.find('select');
                 select.append(
-                    $('<option value="' + select.children().length + 1 + '">' + name + '</option>')
+                    $('<option value="' + ( select.children().length ) + '">' + name + '</option>')
                 );
             }
         }
@@ -183,8 +213,14 @@ rld.UI = function( window, document, $ ) {
             results = data;
             _self.$base.show('100');
 
+            if( !results || !results.length ) {
+                error( "Oh No! Looks like we couldn't match up everyone."  );
+            }
+
+            // title
+            $('#results h1:first').html('<i class="icon-star-empty"></i> ' + ( drawing.id || 'Secret Santa' ) );
+
             // display results and links
-            
             var container = $( '#results_list' );
             var they, have;
             for (var i = 0; i < results.length; i++) {
@@ -196,14 +232,50 @@ rld.UI = function( window, document, $ ) {
                 );
 
                 container.append( 
-                    $('<p>').text( they.first + ' ' + they.last )
+                    $('<p>').html( '<strong>' + they.first + ' ' + they.last + '</strong> click below to find out who you have.' )
                 );
-                var link = 'https://github/xxx/xxx/#!/' + btoa(have.first + ',' + have.last);
+
+                var link = window.location + '#!/' + btoa( ( drawing.id || '' ) + ',' + they.first + ',' + they.last + ',' + have.first + ',' + have.last );
                 container.append( 
                     $('<a href="' + link + '">').text( link )
                 );
 
             };
+
+        }
+
+        function _onExit( data ) {
+            _self.$base.hide('100');
+        }
+    }   
+
+    function RevealState( id, owner ) {
+        var _self = this;
+
+        // IState
+        this.id = id;
+        this.$base = $( '#' + id );
+        this.enter = _onEnter;
+        this.exit = _onExit;
+
+        function _onEnter( data ) {
+            _self.$base.show('100');
+
+            var vals      = atob( data ).split(',');
+            var drawing   = vals[0] !== '' ? vals[0] : 'Secret Santa';
+            var theyFirst = vals[1] || 'Joe';
+            var theyLast  = vals[2] || 'Bob';
+            var haveFirst = vals[3] || 'Jane';
+            var haveLast  = vals[4] || 'Bob';
+
+            if( vals.length !== 5 ) error( "Oh No! Looks like there was a little mix up with the elves and we couldn't find your drawing..." );
+
+            $( '#reveal_draw_name' ).text( drawing );
+
+            // display winner
+            $( '#they' ).text( theyFirst );
+
+            $( '#have' ).text( haveFirst + ' ' + haveLast );
 
         }
 

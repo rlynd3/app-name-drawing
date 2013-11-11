@@ -16,6 +16,15 @@ rld.Person = function( first, last ) {
     this.first = first || 'joe';
     this.last  = last  || 'schmo';
 
+    // get fullName
+    Object.defineProperty(_self, "fullName", {
+        get: function () {
+            return _self.first + ' ' + _self.last;
+        },
+        enumerable: true,
+        configurable: true
+    });
+
     // public methods
     
     /**

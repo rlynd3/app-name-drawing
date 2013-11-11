@@ -77,6 +77,39 @@ background:#fff;
 	display:none;
 	}
 
+#have {
+	position: relative;
+	background: url(../img/tag0.png) top left no-repeat,
+				url(../img/tag2.png) top right no-repeat;
+	height: 70px;
+	line-height: 70px;
+	padding-left: 30px;
+	padding-right: 15px;
+	/* vertical-align: middle; */
+	display: inline-block;
+	margin-top: 8px;
+	margin-bottom: 5px;
+	font-size: larger;
+    white-space: nowrap;
+}
+
+#have:after {
+	position: absolute;
+	content: '';
+	z-index: -1;
+	left: 37px;
+	top: 0;
+	right: 8px;
+	bottom: 0;
+	background: url(../img/tag1.png) top left repeat-x;
+}
+
+@media all and (max-width: 480px) {
+	#have {
+		font-size: smaller;
+	}
+}
+
 /* NAV BAR*/
 .navbar{
 position:fixed;
