@@ -203,12 +203,6 @@ rld.UI = function( window, document, $ ) {
 
         var results; // set on enter
 
-        // // buttons
-        // var startBtn = this.$base.find('button');
-        // startBtn.click(function(){
-        //     owner.startState( owner.State.Create );
-        // });
-
         function _onEnter( data ) {
             results = data;
             _self.$base.show('100');
@@ -237,9 +231,7 @@ rld.UI = function( window, document, $ ) {
 
                 var link = window.location + '#!/' + btoa( ( drawing.id || '' ) + ',' + they.first + ',' + they.last + ',' + have.first + ',' + have.last );
                 container.append( 
-                    $('<a href="' + link + '">').text( link ).click(function(evt) {
-                        window.open( link );
-                    })
+                    $('<a target="_blank" href="' + link + '">').text( link )
                 );
 
             };
@@ -265,10 +257,10 @@ rld.UI = function( window, document, $ ) {
 
             var vals      = atob( data ).split(',');
             var drawing   = vals[0] !== '' ? vals[0] : 'Secret Santa';
-            var theyFirst = vals[1] || 'Joe';
-            var theyLast  = vals[2] || 'Bob';
-            var haveFirst = vals[3] || 'Jane';
-            var haveLast  = vals[4] || 'Bob';
+            var theyFirst = vals[1] || '';
+            var theyLast  = vals[2] || '';
+            var haveFirst = vals[3] || '';
+            var haveLast  = vals[4] || '';
 
             if( vals.length !== 5 ) error( "Oh No! Looks like there was a little mix up with the elves and we couldn't find your drawing..." );
 

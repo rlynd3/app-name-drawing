@@ -13,8 +13,8 @@ rld.Person = function( first, last ) {
     var _cantDrawList = [_self];
 
     // public properties
-    this.first = first || 'joe';
-    this.last  = last  || 'schmo';
+    this.first = first || '';
+    this.last  = last  || '';
 
     // get fullName
     Object.defineProperty(_self, "fullName", {
