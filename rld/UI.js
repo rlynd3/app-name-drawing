@@ -123,7 +123,7 @@ rld.UI = function( window, document, $ ) {
             var entry, choices, p;
             for (var i = 0; i < persons.length; i++) {
                 entry = persons[ i ];
-                choices = entry.container.find("option:selected").map(function(){ return this.innerText }).get()
+                choices = entry.container.find("option:selected").map(function(){ return this.textContent || this.innerText || this.innerHTML }).get();
                 
                 for (var j = 0; j < choices.length; j++) {
                     p = drawing.getPersonByFullName( choices[ j ] );
