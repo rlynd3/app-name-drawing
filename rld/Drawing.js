@@ -89,19 +89,25 @@ rld.Drawing = function( id ) {
     };
 
     this.drawAllNames = function() {
-        var itr = 10; // try 10 times (max) for a solution or give up...
+        var itr = 100; // try 100 times (max) for a solution or give up...
         return (function draw() {
             _self.resetDrawing();
             var results = [];
             var i = _persons.length;
             var p;
+            var tryAgain = false;
             while( i-- ) {
                 p = _self.drawName( _persons[i] );
                 results.push( { they: _persons[i], have: p } );
-                // console.log( _persons[i].fullName + ' has ' + p.fullName );
+                if(_persons[i] == p)
+                {
+                    tryAgain = true;
+                    break;
+                }
+                console.log( _persons[i].fullName + ' has ' + p.fullName );
             }
 
-            if( p === _persons[i+1] ) {
+            if( p === _persons[i+1] || tryAgain ) {
                 // try again
                 if( itr-- ) {
                     return draw();
